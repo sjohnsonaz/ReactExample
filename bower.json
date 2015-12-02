@@ -1,0 +1,21 @@
+{
+    "name": "ReactExample",
+    "version": "0.0.0",
+    "description": "",
+    "keywords": [],
+    "homepage": "",
+    "author": "Sean Johnson <sjohnson@sjohnsonaz.com> (www.sjohnsonaz.com)",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sjohnsonaz/ReactExample.git"
+    },
+    "ignore": [
+        ".jshintrc",
+        "**/*.txt"
+    ],
+    "dependencies": {
+        "fontawesome": "4.x.x",
+        "react": "0.14.3"
+    },
+    "devDependencies": {}
+}
