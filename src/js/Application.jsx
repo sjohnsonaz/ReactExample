@@ -6,6 +6,7 @@ export default class Application extends Component {
         return (
             <div>
                 <h1>React Application</h1>
+                <strong>test</strong>
                 <HelloWorld/>
             </div>
         );

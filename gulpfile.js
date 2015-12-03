@@ -5,6 +5,7 @@ var watchLess = require('gulp-watch-less');
 var less = require('gulp-less');
 var minifyCss = require('gulp-minify-css');
 var webpack = require('webpack');
+var WebpackDevServer = require("webpack-dev-server");
 
 var webpackConfig = require('./webpack.config');
 
@@ -61,6 +62,10 @@ gulp.task('webpack:build', function(callback) {
 });
 
 var webpackConfigDev = Object.create(webpackConfig);
+webpackConfigDev.plugins = webpackConfigDev.plugins.concat(
+    //new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+);
 webpackConfigDev.devtool = "sourcemap";
 webpackConfigDev.debug = true;
 var webpackCompilerDev = webpack(webpackConfigDev);
@@ -81,6 +86,20 @@ gulp.task('webpack:build-dev', function(callback) {
     });
 });
 
+gulp.task('webpack:server', function(callback) {
+    var server = new WebpackDevServer(webpack(webpackConfigDev), {
+        publicPath: webpackConfigDev.output.publicPath,
+        hot: true,
+        historyApiFallback: true
+    }).listen(3000, 'localhost', function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+
+        console.log('Listening at localhost:3000');
+    });
+})
+
 gulp.task("webpack:build-watch", ["webpack:build-dev"], function() {
     gulp.watch(["src/js/**/*"], ["webpack:build-dev"]);
 });
@@ -88,3 +107,5 @@ gulp.task("webpack:build-watch", ["webpack:build-dev"], function() {
 gulp.task('default', ['less:build', 'webpack:build']);
 
 gulp.task('dev', ['less:build-watch', 'webpack:build-watch']);
+
+gulp.task('dev-server', ['less:build-watch', 'webpack:server']);

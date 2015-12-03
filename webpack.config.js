@@ -1,23 +1,41 @@
 var path = require('path');
+var webpack = require('webpack');
 module.exports = {
-    context: path.join(__dirname, 'src/js'),
-    entry: './MainApp.jsx',
-    plugins: [],
+    devtool: 'eval',
+    entry: [
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
+        './src/js/MainApp'
+    ],
+    output: {
+        path: path.join(__dirname, 'dist'),
+        filename: 'bundle.js',
+        publicPath: '/static/'
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+    ],
     resolve: {
-        extensions: ['', '.webpack.js', '.web.js', '.js', '.jsx', '.json'],
+        extensions: ['', '.js', '.jsx']
     },
     module: {
         loaders: [{
             test: /\.jsx?$/,
-            exclude: /(node_modules)/,
-            loader: 'babel-loader',
-            query: {
-                presets: ['es2015', 'react']
-            }
+            loaders: ['react-hot', 'babel'],
+            include: path.join(__dirname, 'src')
+        }, {
+            test: /\.less$/,
+            loader: 'style!css!less'
+        }, {
+            test: /\.json$/,
+            loader: 'json-loader'
         }]
     },
-    output: {
-        path: path.join(__dirname, 'public/js'),
-        filename: '[name].min.js'
+    node: {
+        console: true,
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
     }
 };
